@@ -21,8 +21,4 @@ jobs:
       uses: actions/upload-artifact@v3.1.0
       with:
         name: openssl-net
-        path: dist/openssl-net.1.0.0.nupkg    
-    - name: Release
-      uses: softprops/action-gh-release@v1
-      with:
-        files: dist/openssl-net.1.0.0.nupkg
+        path: dist/**/*
