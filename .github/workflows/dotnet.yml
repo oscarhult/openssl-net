@@ -1,4 +1,4 @@
-name: .NET
+name: build+push
 
 on: push
 
@@ -7,9 +7,21 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3    
-    - name: Setup .NET Core SDK
+    - name: setup-dotnet
       uses: actions/setup-dotnet@v2.1.0 
-    - name: Pack
-      run: dotnet pack -c Release -o dist -p:PackageVersion=1.0.${{github.run_number}} -p:RepositoryUrl=${{github.repositoryUrl}}
-    - name: Publish the package to GPR
-      run: dotnet nuget push dist/**/*.nupkg -k ${{github.token}} -s https://nuget.pkg.github.com/oscarhult/index.json
+    - name: pack
+      run: |
+        dotnet pack
+        -c Release
+        -o dist
+        --include-source
+        --include-symbols
+        -p:PackageVersion=1.0.${{github.run_number}}
+        -p:RepositoryUrl=${{github.repositoryUrl}}
+    - name: push
+      run: |
+        dotnet nuget push
+        dist/**/*.nupkg
+        -k ${{github.token}}
+        -s https://nuget.pkg.github.com/oscarhult/index.json
+        --skip-duplicate
