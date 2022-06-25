@@ -11,17 +11,17 @@ jobs:
       uses: actions/setup-dotnet@v2.1.0 
     - name: pack
       run: |
-        dotnet pack
-        -c Release
-        -o dist
-        --include-source
-        --include-symbols
-        -p:PackageVersion=1.0.${{github.run_number}}
+        dotnet pack \
+        -c Release \
+        -o dist \
+        --include-source \
+        --include-symbols \
+        -p:PackageVersion=1.0.${{github.run_number}} \
         -p:RepositoryUrl=${{github.repositoryUrl}}
     - name: push
       run: |
-        dotnet nuget push
-        dist/**/*.nupkg
-        -k ${{github.token}}
-        -s https://nuget.pkg.github.com/oscarhult/index.json
+        dotnet nuget push \
+        dist/**/*.nupkg \
+        -k ${{github.token}} \
+        -s https://nuget.pkg.github.com/oscarhult/index.json \
         --skip-duplicate
