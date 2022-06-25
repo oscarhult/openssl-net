@@ -1,9 +1,7 @@
-name: build+push
-
+name: openssl-net
 on: push
-
 jobs:
-  build:
+  openssl-net:
     runs-on: ubuntu-latest
     steps:
     - name: Checkout
