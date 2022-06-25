@@ -1,36 +1,28 @@
 name: .NET
 
-on:
-  push:
-    branches: [ "master" ]
-  pull_request:
-    branches: [ "master" ]
+on: push
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
-
     steps:
-    - uses: actions/checkout@v3
-    
+    - uses: actions/checkout@v3    
     - name: Setup .NET Core SDK
-      uses: actions/setup-dotnet@v2.1.0
-        
+      uses: actions/setup-dotnet@v2.1.0        
     - name: Restore
-      run: dotnet restore
-      
+      run: dotnet restore      
     - name: Build
-      run: dotnet build --no-restore --configuration Release
-      
+      run: dotnet build --no-restore --configuration Release      
     - name: Test
-      run: dotnet test --no-build --verbosity normal
-      
+      run: dotnet test --no-build --verbosity normal      
     - name: Pack
-      run: dotnet pack --no-build --no-restore --no-dependencies --configuration Release --verbosity normal --output artifacts
-    
+      run: dotnet pack --no-build --no-restore --no-dependencies --configuration Release --verbosity normal --output dist    
     - name: Upload a Build Artifact
       uses: actions/upload-artifact@v3.1.0
       with:
         name: openssl-net
-        path: artifacts
+        path: dist/openssl-net.1.0.0.nupkg    
+    - name: Release
+      uses: softprops/action-gh-release@v1
+      with:
+        files: dist/openssl-net.1.0.0.nupkg
