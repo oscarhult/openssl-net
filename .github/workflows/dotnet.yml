@@ -6,11 +6,11 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    - name: checkout
-      uses: actions/checkout@v3    
-    - name: setup-dotnet
-      uses: actions/setup-dotnet@v2.1.0 
-    - name: pack
+    - name: Checkout
+      uses: actions/checkout@v3
+    - name: .NET
+      uses: actions/setup-dotnet@v2.1.0
+    - name: Pack
       run: |
         dotnet pack \
         -c Release \
@@ -19,7 +19,7 @@ jobs:
         --include-symbols \
         -p:PackageVersion=1.0.${{github.run_number}} \
         -p:RepositoryUrl=${{github.repositoryUrl}}
-    - name: push
+    - name: Push
       run: |
         dotnet nuget push \
         dist/**/*.symbols.nupkg \
