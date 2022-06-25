@@ -1,0 +1,36 @@
+name: .NET
+
+on:
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Setup .NET Core SDK
+      uses: actions/setup-dotnet@v2.1.0
+        
+    - name: Restore
+      run: dotnet restore
+      
+    - name: Build
+      run: dotnet build --no-restore --configuration Release
+      
+    - name: Test
+      run: dotnet test --no-build --verbosity normal
+      
+    - name: Pack
+      run: dotnet pack --no-build --no-restore --no-dependencies --configuration Release --verbosity normal --output artifacts
+    
+    - name: Upload a Build Artifact
+      uses: actions/upload-artifact@v3.1.0
+      with:
+        name: openssl-net
+        path: artifacts
